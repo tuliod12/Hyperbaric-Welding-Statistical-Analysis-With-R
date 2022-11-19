@@ -1,0 +1,28 @@
+
+
+library(planex)
+library(tidyverse)
+dataset <- read.csv("dataset.csv", sep = ";")
+dataset
+
+# verificando a classe dos objetos do dataframe criado a partir do csv:
+sapply(dataset, class)
+
+# convertendo para a codificação canônica:
+dataset <- dataset %>%
+  mutate_at(
+    c("Profundidade", "Polaridade", "Amp._Corrente", "Frequencia"), # variáveis
+    as.factor2k                                 # função
+  )
+glimpse(dataset)
+
+
+sapply(dataset, class)
+
+mod <- lm(Penetracao  ~ Profundidade*Polaridade*Amp._Corrente*Frequencia, 
+          data= dataset)
+interactionPlot(mod)
+
+anova(mod)
+summary(mod)
+
